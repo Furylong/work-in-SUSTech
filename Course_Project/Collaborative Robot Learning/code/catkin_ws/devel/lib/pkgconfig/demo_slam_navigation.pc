@@ -1,0 +1,8 @@
+prefix=/home/merryzyk/catkin_ws/devel
+
+Name: demo_slam_navigation
+Description: Description of demo_slam_navigation
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/merryzyk/catkin_ws/devel
+
+Name: demo_gazebo_urdf
+Description: Description of demo_gazebo_urdf
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
