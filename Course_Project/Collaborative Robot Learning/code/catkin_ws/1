@@ -1,0 +1,87 @@
+source devel/setup.bash
+roslaunch myrobot_description display_my_robot.launch 
+
+source devel/setup.bash
+roslaunch myrobot_description test.launch
+
+source devel/setup.bash
+rosrun teleop_robot teleop_robot_key
+
+source devel/setup.bash
+roslaunch robot_navigation robot_navigation.launch
+
+source devel/setup.bash
+roslaunch darknet_ros yolo_v4.launch
+
+source devel/setup.bash
+roslaunch robot_navigation gmapping.launch
+
+rosrun map_server map_saver -f ~/catkin_ws/src/robot_navigation/maps/room3
+rosrun map_server map_server /home/merryzyk/catkin_ws/src/robot_navigation/maps/room1.yaml
+
+
+自主导航
+	<group if = "$(arg gmapping)">
+		<include file = "$(find robot_navigation)/config/gmapping/gmapping.launch"/>
+	</group>
+	
+加载地图	
+	 <node name="map_server" pkg="map_server" type="map_server" args="$(find robot_navigation)/maps/room.yaml" output="screen"/>
+	 
+	 
+	  <arg name="world_name" value="$(find aws_robomaker_small_house_world)/worlds/small_house.world"/>
+导航包配置,liadr_link采用导航包的配置，urdf模型参考boat1里的lidar_link配置一致，这样不需要修改插件配置\
+
+
+
+
+
+
+
+
+
+ <link name="caster_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+        <geometry>
+            <sphere radius="0.032"/>
+        </geometry>
+          <material name="black">
+            <color rgba="0.0 0.0 0.0 0.5" /> 
+          </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="1.57079 0 0"/>
+        <geometry>
+            <sphere radius="0.032"/>
+        </geometry>
+          <material name="black">
+            <color rgba="0.0 0.0 0.0 0.5" /> 
+          </material>
+      </collision>
+      <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.0000571250000001" ixy="0" ixz="0" iyy="0.00005712504" iyz="0" izz="0.000108"/>
+    </inertial>
+  </link>
+    
+  <joint name="caster_joint" type="fixed">
+      <parent link="base_link" />
+      <child link="caster_link" />
+      <origin xyz="-0.12 0.0 -0.06" />
+      <axis xyz="0 1 0" />
+  </joint>
+
+
+
+  <gazebo reference="caster_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="caster_link">
+    <mu1 value="0"/>
+    <mu2 value="0"/>
+    <kp value="5000000.0" />
+    <kd value="100.0" />
+    <!-- <fdir1 value="0 0 1"/> -->
+  </gazebo>
